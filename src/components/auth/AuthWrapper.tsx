@@ -1,30 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import { useAuthStore } from '@/store/authStore'
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/store/authStore';
-
-interface AuthWrapperProps {
-  children: React.ReactNode;
+interface AuthRouteProps {
+  children: React.ReactNode
 }
 
-const AuthWrapper = ({ children }: AuthWrapperProps) => {
-  const router = useRouter();
-  const isAuthenticated = useAuthStore((state: { isAuthenticated: any; }) => state.isAuthenticated);
-  
+export const AuthRoute = ({ children }: AuthRouteProps) => {
+  const router = useRouter()
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
+
   useEffect(() => {
     if (isAuthenticated) {
-      router.replace('/dashboard');
+      router.push('/pages/dashboard')
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, router])
 
-  // Show nothing while checking authentication
-  if (isAuthenticated) {
-    return null;
-  }
-
-  return <>{children}</>;
-};
-
-export default AuthWrapper;
+  return !isAuthenticated ? <>{children}</> : null
+}

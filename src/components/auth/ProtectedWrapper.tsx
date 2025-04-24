@@ -1,29 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
+'use client'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import { useAuthStore } from '@/store/authStore'
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/store/authStore';
-
-interface ProtectedWrapperProps {
-  children: React.ReactNode;
+interface ProtectedRouteProps {
+  children: React.ReactNode
 }
 
-const ProtectedWrapper = ({ children }: ProtectedWrapperProps) => {
-  const router = useRouter();
-  const isAuthenticated = useAuthStore((state: { isAuthenticated: any; }) => state.isAuthenticated);
-  
+export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+  const router = useRouter()
+  const isAuthenticated = useAuthStore((state: { isAuthenticated: any; }) => state.isAuthenticated)
+
   useEffect(() => {
     if (!isAuthenticated) {
-      router.replace('/login');
+      router.push('/pages/login')
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, router])
 
-  if (!isAuthenticated) {
-    return null;
-  }
+  return isAuthenticated ? <>{children}</> : null
+}
 
-  return <>{children}</>;
-};
-
-export default ProtectedWrapper;

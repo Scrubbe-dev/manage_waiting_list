@@ -1,8 +1,9 @@
+'use client'
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { useMessageStore, UserMessage } from '@/store/messageStore';
-import AuthWrapper from '@/components/auth/AuthWrapper';
 import { 
   LogOut, 
   Inbox, 
@@ -16,9 +17,10 @@ import {
   MessageSquare,
   Filter,
   X } from 'lucide-react';
+import { ProtectedRoute } from '@/components/auth/ProtectedWrapper';
 type UserRole =  "CISO" | "SECURITY_ENGINEER" | "SOC_ANALYST" | "IT_MANAGER" | "OTHERS" | undefined;
 const Dashboard = () => {
-  // const { isAuthenticated, logout } = useAuthStore();
+  const { isAuthenticated, logout } = useAuthStore();
   const { 
     messages,
     filteredMessages, 
@@ -143,7 +145,6 @@ const Dashboard = () => {
                     placeholder={useFilteredEndpoint ? "Search server-side..." : "Search client-side..."}
                   />
                 </div>
-                
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={toggleEndpoint}
@@ -178,6 +179,12 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
+              <div className='w-full h-fit'>
+                  <button onClick={()=>logout()}>
+                        Logout
+                  </button>
+                    
+                </div>
               
               {showFilters && useFilteredEndpoint && (
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-2 border-t border-gray-200">
@@ -496,8 +503,8 @@ const Dashboard = () => {
 
 export default function MainDashboard(){
   return(
-      <AuthWrapper>
-            <Dashboard />
-      </AuthWrapper>
+    <ProtectedRoute>
+        <Dashboard />
+  </ProtectedRoute> 
   )
 }

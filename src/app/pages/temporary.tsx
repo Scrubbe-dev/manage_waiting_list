@@ -1,384 +1,243 @@
-// import { useEffect, useState } from 'react';
+// import { useState, FormEvent, useEffect } from 'react';
 // import { useAuthStore } from '../store/authStore';
-// import { useMessageStore } from '../store/messageStore';
-// import { LogOut, Inbox, AlertCircle, Search, ChevronDown, ChevronRight, RefreshCw, User, Briefcase, MessageSquare } from 'lucide-react';
+// import { Lock, Mail, Eye, EyeOff, AlertCircle } from 'lucide-react';
 
-// const Dashboard = () => {
-//   const { isAuthenticated, logout } = useAuthStore();
-//   const { messages, isLoading, error, fetchMessages } = useMessageStore();
-//   const [searchTerm, setSearchTerm] = useState('');
-//   const [filterColumn, setFilterColumn] = useState('all');
-//   const [isRefreshing, setIsRefreshing] = useState(false);
-//   const [selectedMessage, setSelectedMessage] = useState<string | null>(null);
-//   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+// const Login = () => {
+//   const [email, setEmail] = useState('');
+//   const [password, setPassword] = useState('');
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [isEmailValid, setIsEmailValid] = useState(true);
+//   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+//   const [animationClass, setAnimationClass] = useState('');
+//   const { login, isLoading, error } = useAuthStore();
 
-//   useEffect(() => {
-//     fetchMessages();
-//   }, [fetchMessages]);
-
-//   const handleRefresh = async () => {
-//     setIsRefreshing(true);
-//     await fetchMessages();
-//     setIsRefreshing(false);
+//   // Email validation
+//   const validateEmail = (email: string) => {
+//     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+//     return re.test(String(email).toLowerCase());
 //   };
 
-//   const filteredMessages = messages.filter(message => {
-//     const searchLower = searchTerm.toLowerCase();
-//     if (searchTerm === '') return true;
-    
-//     switch (filterColumn) {
-//       case 'fullname':
-//         return message.fullname.toLowerCase().includes(searchLower);
-//       case 'company':
-//         return message.company.toLowerCase().includes(searchLower);
-//       case 'role':
-//         return message.role.toLowerCase().includes(searchLower);
-//       case 'message':
-//         return message.message.toLowerCase().includes(searchLower);
-//       default:
-//         return (
-//           message.fullname.toLowerCase().includes(searchLower) ||
-//           message.company.toLowerCase().includes(searchLower) ||
-//           message.role.toLowerCase().includes(searchLower) ||
-//           message.message.toLowerCase().includes(searchLower)
-//         );
+//   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const value = e.target.value;
+//     setEmail(value);
+//     if (value && !validateEmail(value)) {
+//       setIsEmailValid(false);
+//     } else {
+//       setIsEmailValid(true);
 //     }
-//   });
+//   };
+
+//   const handleSubmit = async (e: FormEvent) => {
+//     e.preventDefault();
+//     if (email && password && isEmailValid) {
+//       setAnimationClass('animate-pulse');
+//       console.log(email,password)
+//       await login(email, password);
+//       setAnimationClass('');
+//     } else {
+//       setAnimationClass('animate-shake');
+//       setTimeout(() => setAnimationClass(''), 500);
+//     }
+//   };
+
+//   // Create particle effect for background
+//   useEffect(() => {
+//     const canvas = document.getElementById('particles') as HTMLCanvasElement;
+//     if (!canvas) return;
+
+//     const ctx = canvas.getContext('2d');
+//     if (!ctx) return;
+
+//     canvas.width = window.innerWidth;
+//     canvas.height = window.innerHeight;
+
+//     let particles: Array<{
+//       x: number;
+//       y: number;
+//       size: number;
+//       speedX: number;
+//       speedY: number;
+//       opacity: number;
+//     }> = [];
+
+//     const createParticles = () => {
+//       for (let i = 0; i < 100; i++) {
+//         particles.push({
+//           x: Math.random() * canvas.width,
+//           y: Math.random() * canvas.height,
+//           size: Math.random() * 3 + 1,
+//           speedX: Math.random() * 0.5 - 0.25,
+//           speedY: Math.random() * 0.5 - 0.25,
+//           opacity: Math.random() * 0.5 + 0.1
+//         });
+//       }
+//     };
+
+//     const animateParticles = () => {
+//       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+//       for (let i = 0; i < particles.length; i++) {
+//         const p = particles[i];
+//         ctx.fillStyle = `rgba(66, 153, 225, ${p.opacity})`;
+//         ctx.beginPath();
+//         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+//         ctx.fill();
+        
+//         p.x += p.speedX;
+//         p.y += p.speedY;
+        
+//         if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+//         if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+//       }
+      
+//       requestAnimationFrame(animateParticles);
+//     };
+
+//     const handleResize = () => {
+//       canvas.width = window.innerWidth;
+//       canvas.height = window.innerHeight;
+//       particles = [];
+//       createParticles();
+//     };
+
+//     window.addEventListener('resize', handleResize);
+//     createParticles();
+//     animateParticles();
+
+//     return () => {
+//       window.removeEventListener('resize', handleResize);
+//     };
+//   }, []);
 
 //   return (
-//     <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
-//       {/* Header */}
-//       <header className="bg-white bg-opacity-90 backdrop-blur-sm shadow-md sticky top-0 z-30">
-//         <div className="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8">
-//           <div className="flex justify-between items-center">
-//             <div className="flex items-center">
-//               <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg p-2 mr-3">
-//                 <Inbox size={24} className="text-white" />
-//               </div>
-//               <h1 className="text-xl md:text-2xl font-bold text-gray-900 hidden sm:block">User Messages Dashboard</h1>
-//               <h1 className="text-xl font-bold text-gray-900 sm:hidden">Messages</h1>
-//             </div>
-
-//             <div className="flex items-center space-x-4">
-//               <div className="hidden md:flex items-center bg-white rounded-full px-1 py-1 shadow-sm">
-//                 <div className="bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm font-medium">
-//                   {messages.length} Messages
-//                 </div>
-//                 <button 
-//                   onClick={handleRefresh}
-//                   className="ml-2 mr-1 p-1 text-gray-500 hover:text-blue-600 transition-colors duration-200"
-//                 >
-//                   <RefreshCw size={18} className={`${isRefreshing ? 'animate-spin' : ''}`} />
-//                 </button>
-//               </div>
-
-//               <div className="hidden md:block relative">
-//                 <div className="flex items-center bg-blue-600 text-white rounded-full overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-//                   <div className="px-4 py-2 text-sm font-medium truncate max-w-xs">
-//                     {isAuthenticated || 'Admin'}
-//                   </div>
-//                   <button
-//                     onClick={logout}
-//                     className="bg-red-500 hover:bg-red-600 transition-colors duration-200 px-3 py-2 flex items-center"
-//                   >
-//                     <LogOut size={16} className="mr-1" />
-//                     <span>Logout</span>
-//                   </button>
-//                 </div>
-//               </div>
-
-//               <button 
-//                 className="md:hidden text-gray-600 focus:outline-none" 
-//                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-//               >
-//                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                   {isMobileMenuOpen ? (
-//                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-//                   ) : (
-//                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-//                   )}
-//                 </svg>
-//               </button>
-//             </div>
-//           </div>
-
-//           {/* Mobile Menu */}
-//           {isMobileMenuOpen && (
-//             <div className="mt-4 pb-2 border-t border-gray-200 md:hidden">
-//               <div className="flex flex-col space-y-3 pt-3">
-//                 <div className="flex items-center justify-between">
-//                   <div className="bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm font-medium">
-//                     {messages.length} Messages
-//                   </div>
-//                   <button 
-//                     onClick={handleRefresh}
-//                     className="p-1 text-gray-500 hover:text-blue-600 transition-colors duration-200"
-//                   >
-//                     <RefreshCw size={18} className={`${isRefreshing ? 'animate-spin' : ''}`} />
-//                   </button>
-//                 </div>
-                
-//                 <div className="flex items-center justify-between">
-//                   <span className="text-sm font-medium text-gray-700 truncate max-w-xs">
-//                     {isAuthenticated || 'Admin'}
-//                   </span>
-//                   <button
-//                     onClick={logout}
-//                     className="bg-red-500 hover:bg-red-600 text-white transition-colors duration-200 px-3 py-1 text-sm rounded-full flex items-center"
-//                   >
-//                     <LogOut size={14} className="mr-1" />
-//                     <span>Logout</span>
-//                   </button>
-//                 </div>
-//               </div>
-//             </div>
-//           )}
-//         </div>
-//       </header>
-
-//       <main className="flex-grow w-full mx-auto py-6 px-4 sm:px-6 lg:px-8 max-w-7xl">
-//         {/* Search Bar */}
-//         <div className="mb-6">
-//           <div className="bg-white rounded-lg shadow-md p-4">
-//             <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 sm:items-center">
-//               <div className="relative flex-grow">
-//                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-//                   <Search className="h-5 w-5 text-gray-400" />
-//                 </div>
-//                 <input
-//                   type="text"
-//                   value={searchTerm}
-//                   onChange={(e) => setSearchTerm(e.target.value)}
-//                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-//                   placeholder="Search messages..."
-//                 />
-//               </div>
-//               <div className="flex items-center">
-//                 <label htmlFor="filter" className="text-sm font-medium text-gray-700 mr-2 whitespace-nowrap">
-//                   Filter by:
-//                 </label>
-//                 <select
-//                   id="filter"
-//                   value={filterColumn}
-//                   onChange={(e) => setFilterColumn(e.target.value)}
-//                   className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
-//                 >
-//                   <option value="all">All Fields</option>
-//                   <option value="fullname">Name</option>
-//                   <option value="company">Company</option>
-//                   <option value="role">Role</option>
-//                   <option value="message">Message</option>
-//                 </select>
-//               </div>
-//             </div>
+//     <div className="relative flex items-center justify-center min-h-screen py-24 bg-gradient-to-br from-blue-900 to-indigo-900 overflow-hidden">
+//       <canvas id="particles" className="absolute inset-0 z-0"></canvas>
+      
+//       <div className={`relative z-10 p-8 bg-white bg-opacity-10 mx-auto backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-md border border-white border-opacity-20 ${animationClass}`}>
+//        <div className='w-full flex justify-center'>
+//         <div className=" w-32 h-32 bg-gradient-to-r from-blue-400 -translate-t-20 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
+//           <div className="bg-white bg-opacity-20 backdrop-blur-sm p-6 rounded-full">
+//             <Lock size={48} className="text-white" />
 //           </div>
 //         </div>
-
-//         {/* Error display */}
+//        </div>
+//         <h1 className="text-3xl font-bold mt-5 mb-2 text-center text-white">Welcome Back</h1>
+//         <p className="text-center text-blue-100 mb-12">Enter your credentials to access your account</p>
+        
 //         {error && (
-//           <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6 rounded-md shadow-sm">
+//           <div className="bg-red-500 bg-opacity-20 backdrop-blur-sm border border-red-400 text-white px-4 py-3 rounded-lg mb-6 flex items-center">
+//             <AlertCircle size={20} className="mr-2" />
+//             <span>{error}</span>
+//           </div>
+//         )}
+        
+//         <form onSubmit={handleSubmit} className="space-y-6">
+//           <div className="relative">
+//             <label className="block text-blue-100 text-sm font-medium mb-2" htmlFor="email">
+//               Email Address
+//             </label>
+//             <div className="relative">
+//               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+//                 <Mail size={18} className="text-blue-300" />
+//               </div>
+//               <input
+//                 id="email"
+//                 type="email"
+//                 className={`bg-white bg-opacity-10 shadow-inner border ${
+//                   isEmailValid ? 'border-blue-300' : 'border-red-400'
+//                 } rounded-lg w-full py-3 pl-10 pr-3 text-white placeholder-blue-200 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-200`}
+//                 placeholder="you@example.com"
+//                 value={email}
+//                 onChange={handleEmailChange}
+//                 required
+//               />
+//             </div>
+//             {!isEmailValid && email && (
+//               <p className="mt-1 text-sm text-red-300">Please enter a valid email address</p>
+//             )}
+//           </div>
+          
+//           <div className="relative">
+//             <label className="block text-blue-100 text-sm font-medium mb-2" htmlFor="password">
+//               Password
+//             </label>
+//             <div className="relative">
+//               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+//                 <Lock size={18} className="text-blue-300" />
+//               </div>
+//               <input
+//                 id="password"
+//                 type={showPassword ? 'text' : 'password'}
+//                 className={`bg-white bg-opacity-10 shadow-inner border border-blue-300 rounded-lg w-full py-3 pl-10 pr-10 text-white placeholder-blue-200 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-200`}
+//                 placeholder="••••••••"
+//                 value={password}
+//                 onChange={(e) => setPassword(e.target.value)}
+//                 onFocus={() => setIsPasswordFocused(true)}
+//                 onBlur={() => setIsPasswordFocused(false)}
+//                 required
+//               />
+//               <button
+//                 type="button"
+//                 className="absolute inset-y-0 right-0 flex items-center pr-3 text-blue-300 hover:text-white transition duration-200"
+//                 onClick={() => setShowPassword(!showPassword)}
+//               >
+//                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+//               </button>
+//             </div>
+//             {isPasswordFocused && (
+//               <div className="absolute mt-1 right-0 text-xs text-blue-200">
+//                 <span>Password strength: </span>
+//                 <span className={`font-medium ${password.length > 8 ? 'text-green-400' : 'text-yellow-400'}`}>
+//                   {password.length === 0 ? 'None' : password.length < 6 ? 'Weak' : password.length < 10 ? 'Good' : 'Strong'}
+//                 </span>
+//               </div>
+//             )}
+//           </div>
+          
+//           <div className="flex items-center justify-between">
 //             <div className="flex items-center">
-//               <div className="flex-shrink-0">
-//                 <AlertCircle className="h-5 w-5 text-red-400" />
-//               </div>
-//               <div className="ml-3">
-//                 <p className="text-sm text-red-700">{error}</p>
-//               </div>
+//               <input
+//                 id="remember-me"
+//                 type="checkbox"
+//                 className="h-4 w-4 text-blue-500 border-blue-300 rounded focus:ring-blue-400"
+//               />
+//               <label htmlFor="remember-me" className="ml-2 block text-sm text-blue-100">
+//                 Remember me
+//               </label>
+//             </div>
+//             <div className="text-sm">
+//               <a href="#" className="font-medium text-blue-300 hover:text-white transition duration-200">
+//                 Forgot password?
+//               </a>
 //             </div>
 //           </div>
-//         )}
-
-//         {/* Content */}
-//         <div className="bg-white shadow-md rounded-lg overflow-hidden">
-//           {isLoading ? (
-//             <div className="flex justify-center items-center h-64">
-//               <div className="flex flex-col items-center">
-//                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-//                 <p className="mt-4 text-gray-500 text-sm font-medium">Loading messages...</p>
-//               </div>
-//             </div>
-//           ) : filteredMessages.length === 0 ? (
-//             <div className="flex flex-col justify-center items-center h-64 px-6">
-//               <div className="bg-blue-100 p-4 rounded-full mb-4">
-//                 <Inbox size={32} className="text-blue-500" />
-//               </div>
-//               {searchTerm ? (
-//                 <>
-//                   <p className="text-lg font-medium text-gray-900">No matching messages found</p>
-//                   <p className="text-sm text-gray-500 mt-1">Try adjusting your search or filter criteria</p>
-//                 </>
+          
+//           <div>
+//             <button
+//               type="submit"
+//               disabled={isLoading}
+//               className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 font-medium transition duration-300 transform hover:scale-105"
+//             >
+//               <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+//                 <Lock size={18} className="text-blue-300 group-hover:text-blue-200 transition-colors duration-200" />
+//               </span>
+//               {isLoading ? (
+//                 <div className="flex items-center">
+//                   <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+//                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+//                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+//                   </svg>
+//                   <span>Authenticating...</span>
+//                 </div>
 //               ) : (
-//                 <>
-//                   <p className="text-lg font-medium text-gray-900">No messages available</p>
-//                   <p className="text-sm text-gray-500 mt-1">Messages will appear here when available</p>
-//                 </>
+//                 'Sign in securely'
 //               )}
-//             </div>
-//           ) : (
-//             <>
-//               {/* Desktop View */}
-//               <div className="hidden md:block">
-//                 <table className="min-w-full divide-y divide-gray-200">
-//                   <thead className="bg-gray-50">
-//                     <tr>
-//                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                         ID
-//                       </th>
-//                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                         Full Name
-//                       </th>
-//                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                         Company
-//                       </th>
-//                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                         Role
-//                       </th>
-//                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                         Message
-//                       </th>
-//                     </tr>
-//                   </thead>
-//                   <tbody className="bg-white divide-y divide-gray-200">
-//                     {filteredMessages.map((message) => (
-//                       <tr 
-//                         key={message.id} 
-//                         className="hover:bg-blue-50 transition-colors duration-150"
-//                       >
-//                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-//                           {message.id.substring(0, 8)}...
-//                         </td>
-//                         <td className="px-6 py-4 whitespace-nowrap">
-//                           <div className="flex items-center">
-//                             <div className="flex-shrink-0 h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center">
-//                               <User size={16} className="text-blue-600" />
-//                             </div>
-//                             <div className="ml-3">
-//                               <div className="text-sm font-medium text-gray-900">{message.fullname}</div>
-//                             </div>
-//                           </div>
-//                         </td>
-//                         <td className="px-6 py-4 whitespace-nowrap">
-//                           <div className="flex items-center">
-//                             <div className="flex-shrink-0">
-//                               <Briefcase size={16} className="text-gray-400" />
-//                             </div>
-//                             <div className="ml-2 text-sm text-gray-900">{message.company}</div>
-//                           </div>
-//                         </td>
-//                         <td className="px-6 py-4 whitespace-nowrap">
-//                           <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-//                             {message.role}
-//                           </span>
-//                         </td>
-//                         <td className="px-6 py-4 text-sm text-gray-500 max-w-xs">
-//                           <div className="truncate">{message.message}</div>
-//                         </td>
-//                       </tr>
-//                     ))}
-//                   </tbody>
-//                 </table>
-//               </div>
-
-//               {/* Mobile View */}
-//               <div className="md:hidden">
-//                 <ul className="divide-y divide-gray-200">
-//                   {filteredMessages.map((message) => (
-//                     <li key={message.id} className="px-4 py-4">
-//                       <button
-//                         onClick={() => setSelectedMessage(selectedMessage === message.id ? null : message.id)}
-//                         className="w-full"
-//                       >
-//                         <div className="flex justify-between items-center">
-//                           <div className="flex items-center space-x-3">
-//                             <div className="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
-//                               <User size={20} className="text-blue-600" />
-//                             </div>
-//                             <div className="flex flex-col">
-//                               <span className="text-sm font-medium text-gray-900">{message.fullname}</span>
-//                               <span className="text-sm text-gray-500">{message.company}</span>
-//                             </div>
-//                           </div>
-//                           <div className="flex items-center">
-//                             <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 mr-2">
-//                               {message.role}
-//                             </span>
-//                             {selectedMessage === message.id ? (
-//                               <ChevronDown className="h-5 w-5 text-gray-500" />
-//                             ) : (
-//                               <ChevronRight className="h-5 w-5 text-gray-500" />
-//                             )}
-//                           </div>
-//                         </div>
-//                       </button>
-                      
-//                       {selectedMessage === message.id && (
-//                         <div className="mt-4 pl-12">
-//                           <div className="bg-gray-50 rounded-lg p-3">
-//                             <div className="flex items-start mb-2">
-//                               <MessageSquare size={16} className="text-blue-500 mt-1 mr-2" />
-//                               <span className="text-xs font-medium text-gray-500">Message:</span>
-//                             </div>
-//                             <p className="text-sm text-gray-700">{message.message}</p>
-//                             <div className="mt-2 flex items-center text-xs text-gray-500">
-//                               <span className="font-medium">ID:</span>
-//                               <span className="ml-1">{message.id.substring(0, 8)}...</span>
-//                             </div>
-//                           </div>
-//                         </div>
-//                       )}
-//                     </li>
-//                   ))}
-//                 </ul>
-//               </div>
-//             </>
-//           )}
-//         </div>
-
-//         {filteredMessages.length > 0 && (
-//           <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 mt-4 rounded-lg shadow-md">
-//             <div className="flex-1 flex justify-between sm:hidden">
-//               <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-//                 Previous
-//               </button>
-//               <button className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-//                 Next
-//               </button>
-//             </div>
-//             <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-//               <div>
-//                 <p className="text-sm text-gray-700">
-//                   Showing <span className="font-medium">1</span> to{" "}
-//                   <span className="font-medium">{filteredMessages.length}</span> of{" "}
-//                   <span className="font-medium">{filteredMessages.length}</span> results
-//                 </p>
-//               </div>
-//               <div>
-//                 <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-//                   <button className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-//                     <span className="sr-only">Previous</span>
-//                     <ChevronRight className="h-5 w-5 transform rotate-180" />
-//                   </button>
-//                   <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600">
-//                     1
-//                   </button>
-//                   <button className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-//                     <span className="sr-only">Next</span>
-//                     <ChevronRight className="h-5 w-5" />
-//                   </button>
-//                 </nav>
-//               </div>
-//             </div>
+//             </button>
 //           </div>
-//         )}
-//       </main>
-
-//       <footer className="bg-white shadow-inner mt-auto">
-//         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-//           <p className="text-center text-sm text-gray-500">
-//             scrubbe v1.0 • Last updated: {new Date().toLocaleDateString()}
-//           </p>
-//         </div>
-//       </footer>
+//         </form>
+//       </div>
 //     </div>
 //   );
 // };
+
+// export default Login;

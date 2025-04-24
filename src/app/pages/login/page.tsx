@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+'use client'
 import { useState, FormEvent, useEffect } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { Lock, Mail, Eye, EyeOff, AlertCircle } from 'lucide-react';
-import AuthWrapper from '@/components/auth/AuthWrapper';
+import { AuthRoute } from '@/components/auth/AuthWrapper';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -114,11 +116,11 @@ const Login = () => {
     <div className="relative flex items-center justify-center min-h-screen py-24 bg-gradient-to-br from-blue-900 to-indigo-900 overflow-hidden">
       <canvas id="particles" className="absolute inset-0 z-0"></canvas>
       
-      <div className={`relative z-10 p-8 bg-white bg-opacity-10 mx-auto backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-md border border-white border-opacity-20 ${animationClass}`}>
+      <div className={`relative z-10 p-8  bg-opacity-10 mx-auto backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-md border border-white/40 border-opacity-20 ${animationClass}`}>
        <div className='w-full flex justify-center'>
         <div className=" w-32 h-32 bg-gradient-to-r from-blue-400 -translate-t-20 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
           <div className="bg-white bg-opacity-20 backdrop-blur-sm p-6 rounded-full">
-            <Lock size={48} className="text-white" />
+            <Lock size={48} className="text-slate-400" />
           </div>
         </div>
        </div>
@@ -144,7 +146,7 @@ const Login = () => {
               <input
                 id="email"
                 type="email"
-                className={`bg-white bg-opacity-10 shadow-inner border ${
+                className={`bg-white/20 bg-opacity-10 shadow-inner border ${
                   isEmailValid ? 'border-blue-300' : 'border-red-400'
                 } rounded-lg w-full py-3 pl-10 pr-3 text-white placeholder-blue-200 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-200`}
                 placeholder="you@example.com"
@@ -169,7 +171,7 @@ const Login = () => {
               <input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
-                className={`bg-white bg-opacity-10 shadow-inner border border-blue-300 rounded-lg w-full py-3 pl-10 pr-10 text-white placeholder-blue-200 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-200`}
+                className={`bg-white/20 bg-opacity-10 shadow-inner border border-blue-300 rounded-lg w-full py-3 pl-10 pr-10 text-white placeholder-blue-200 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-200`}
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -243,8 +245,8 @@ const Login = () => {
 
 export default function MainLogin(){
   return(
-    <AuthWrapper>
+    <AuthRoute>
          <Login />
-    </AuthWrapper>
+    </AuthRoute>
   )
 }
