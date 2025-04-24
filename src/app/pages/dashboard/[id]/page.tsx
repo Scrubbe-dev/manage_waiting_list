@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation'
 import { useState } from 'react';
 import { Mail, Building, User, MessageSquare, Award, Briefcase, MapPin, Phone, Calendar, Globe } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { ProtectedRoute } from '@/components/auth/ProtectedWrapper';
 
 function UserDetailsPage() {
