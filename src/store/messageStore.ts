@@ -7,6 +7,7 @@ export interface UserMessage {
   company: string;
   message: string;
   role: string;
+  email:string;
   createdAt: string;
 }
 
@@ -37,6 +38,7 @@ interface MessageState {
   queryParams: QueryParams;
   fetchAllMessages: () => Promise<void>;
   fetchFilteredMessages: (params?: Partial<QueryParams>) => Promise<void>;
+  fetchById:(id:string)=> Promise<UserMessage>;
   setQueryParams: (params: Partial<QueryParams>) => void;
   resetFilters: () => void;
 }
@@ -72,7 +74,10 @@ export const useMessageStore = create<MessageState>((set, get) => ({
       });
     }
   },
-
+  fetchById: async (id)=>{
+    const response = await axios.post('/get-single-user', { id });
+   return response.data;
+  },
   fetchFilteredMessages: async (params = {}) => {
     const currentParams = get().queryParams;
     const newParams = { ...currentParams, ...params };
