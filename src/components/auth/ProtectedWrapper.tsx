@@ -1,4 +1,4 @@
-// eslint-disable @typescript-eslint/no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useEffect } from 'react';
@@ -19,7 +19,6 @@ const ProtectedWrapper = ({ children }: ProtectedWrapperProps) => {
     }
   }, [isAuthenticated, router]);
 
-  // Show nothing while checking authentication
   if (!isAuthenticated) {
     return null;
   }
