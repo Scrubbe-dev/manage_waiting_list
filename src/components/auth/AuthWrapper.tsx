@@ -1,4 +1,4 @@
-// components/AuthWrapper.tsx
+// eslint-disable @typescript-eslint/no-explicit-any
 'use client';
 
 import { useEffect } from 'react';
