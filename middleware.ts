@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
   const token = useAuthStore((state)=>state.token)
   const { pathname } = request.nextUrl
   const authRoutes = ['/pages/login']
-  const protectedRoutes = ['/pages/dashboard']
+  const protectedRoutes = ['/pages/dashboard','/pages/dashboard/:id']
 
   if (!token && protectedRoutes.some(route => pathname.startsWith(route))) {
     return NextResponse.redirect(new URL('/pages/login', request.url))

@@ -1,11 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useParams } from 'next/navigation'
 import { useState } from 'react';
 import { Mail, Building, User, MessageSquare, Award, Briefcase, MapPin, Phone, Calendar, Globe } from 'lucide-react';
 import { useRouter } from 'next/router';
+import { ProtectedRoute } from '@/components/auth/ProtectedWrapper';
 
-export default function UserDetailsPage() {
+function UserDetailsPage() {
     const params = useParams()
     const router = useRouter()
   const [user, setUser] = useState({
@@ -223,4 +224,12 @@ export default function UserDetailsPage() {
       </main>
     </div>
   );
+}
+
+export default function MainUserDetailsPage(){
+    return(
+        <ProtectedRoute>
+            <UserDetailsPage />
+        </ProtectedRoute>
+    )
 }
