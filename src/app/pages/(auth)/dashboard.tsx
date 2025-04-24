@@ -1,8 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { useMessageStore, UserMessage } from '@/store/messageStore';
 import AuthWrapper from '@/components/auth/AuthWrapper';
-import { LogOut, Inbox, AlertCircle, Search, ChevronDown, ChevronRight, RefreshCw, User, Briefcase, MessageSquare, Filter, X } from 'lucide-react';
+import { 
+  LogOut, 
+  Inbox, 
+  AlertCircle, 
+  Search,
+  ChevronDown,
+  ChevronRight,
+  RefreshCw, 
+  User,
+  Briefcase,
+  MessageSquare,
+  Filter,
+  X } from 'lucide-react';
 type UserRole =  "CISO" | "SECURITY_ENGINEER" | "SOC_ANALYST" | "IT_MANAGER" | "OTHERS" | undefined;
 const Dashboard = () => {
   // const { isAuthenticated, logout } = useAuthStore();
