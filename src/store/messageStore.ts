@@ -31,6 +31,7 @@ interface MetaData {
 interface MessageState {
   messages: UserMessage[];
   filteredMessages: UserMessage[];
+  usermessage:UserMessage | null;
   isLoading: boolean;
   isFiltering: boolean;
   error: string | null;
@@ -38,7 +39,7 @@ interface MessageState {
   queryParams: QueryParams;
   fetchAllMessages: () => Promise<void>;
   fetchFilteredMessages: (params?: Partial<QueryParams>) => Promise<void>;
-  fetchById:(id:string)=> Promise<UserMessage>;
+  fetchById:(id:string)=> Promise<void>;
   setQueryParams: (params: Partial<QueryParams>) => void;
   resetFilters: () => void;
 }
@@ -56,6 +57,7 @@ export const useMessageStore = create<MessageState>((set, get) => ({
   error: null,
   meta: null,
   queryParams: initialQueryParams,
+  usermessage:null,
 
   fetchAllMessages: async () => {
     set({ isLoading: true, error: null });
@@ -76,7 +78,7 @@ export const useMessageStore = create<MessageState>((set, get) => ({
   },
   fetchById: async (id)=>{
     const response = await axios.post('/get-single-user', { id });
-   return response.data;
+    set({usermessage:response.data})
   },
   fetchFilteredMessages: async (params = {}) => {
     const currentParams = get().queryParams;

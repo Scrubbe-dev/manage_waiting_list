@@ -291,7 +291,7 @@ const Dashboard = () => {
           ) : (
             <>
               {/* Desktop View */}
-              <div className="hidden  xl:block">
+              <div className="hidden  md:block">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
@@ -390,10 +390,16 @@ const Dashboard = () => {
                               <span className="text-sm text-gray-500">{message.company}</span>
                             </div>
                           </div>
+
                           <div className="flex items-center">
                             <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 mr-2">
                               {message.role}
                             </span>
+                            <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibol">
+                             <Link className="cursor-pointer font-bold text-[12px] bg-slate-100 px-2 py-1 rounded-lg" href={`/pages/dashboard/${message.id}`}>
+                                  view more
+                             </Link>
+                          </span>
                             {selectedMessage === message.id ? (
                               <ChevronDown className="h-5 w-5 text-gray-500" />
                             ) : (
