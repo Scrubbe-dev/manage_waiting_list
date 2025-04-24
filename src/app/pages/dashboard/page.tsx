@@ -355,7 +355,7 @@ const Dashboard = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibol">
-                             <Link className="cursor-pointer font-bold text-[12px] bg-slate-100 px-2 py-1 rounded-lg" href={`/pages/dashboard/${message.id}`}>
+                             <Link className="cursor-pointer font-bold text-[12px] bg-slate-100 text-black px-2 py-1 rounded-lg" href={`/pages/dashboard/${message.id}`}>
                                   view more
                              </Link>
                           </span>
@@ -391,7 +391,7 @@ const Dashboard = () => {
                               {message.role}
                             </span>
                             <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibol">
-                             <Link className="cursor-pointer font-bold text-[12px] bg-slate-100 px-2 py-1 rounded-lg" href={`/pages/dashboard/${message.id}`}>
+                             <Link className="cursor-pointer font-bold text-[12px] bg-slate-100  text-black px-2 py-1 rounded-lg" href={`/pages/dashboard/${message.id}`}>
                                   view more
                              </Link>
                           </span>
