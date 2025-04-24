@@ -34,6 +34,7 @@ interface MessageState {
   usermessage:UserMessage | null;
   isLoading: boolean;
   isFiltering: boolean;
+  isDeleted: boolean;
   error: string | null;
   meta: MetaData | null;
   queryParams: QueryParams;
@@ -41,6 +42,7 @@ interface MessageState {
   fetchFilteredMessages: (params?: Partial<QueryParams>) => Promise<void>;
   fetchById:(id:string)=> Promise<void>;
   setQueryParams: (params: Partial<QueryParams>) => void;
+  deleteUser:(id:string)=>Promise<void>;
   resetFilters: () => void;
 }
 
@@ -58,6 +60,7 @@ export const useMessageStore = create<MessageState>((set, get) => ({
   meta: null,
   queryParams: initialQueryParams,
   usermessage:null,
+  isDeleted:false,
 
   fetchAllMessages: async () => {
     set({ isLoading: true, error: null });
@@ -75,6 +78,13 @@ export const useMessageStore = create<MessageState>((set, get) => ({
         error: error instanceof Error ? error.message : 'Failed to fetch all messages'
       });
     }
+  },
+  deleteUser: async (id)=>{
+    const response = await axios.get(`/get-waiting/${id}`)as {success:boolean;message:string};
+
+    set({
+      isDeleted:!!response?.success 
+    })
   },
   fetchById: async (id)=>{
     const response = await axios.post('/get-single-user', { id });
